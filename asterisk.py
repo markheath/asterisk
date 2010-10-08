@@ -3,15 +3,14 @@
 import mvvm
 import clr
 import os
+from GameArea import GameArea
+
 clr.AddReference("WindowsBase")
 clr.AddReference("PresentationCore")
 clr.AddReference("PresentationFramework")
-from System import TimeSpan, Random
-from System.Windows import Point
-from System.Windows.Controls import Canvas
+
+from System import TimeSpan
 from System.Windows.Threading import DispatcherTimer
-from System.Windows.Shapes import Line, Polyline
-from System.Windows.Media import Brushes
 from System.Windows.Input import Key
 
 class ViewModel(mvvm.ViewModelBase):
@@ -87,66 +86,6 @@ class ViewModel(mvvm.ViewModelBase):
         if (args.Key == Key.Space):
             self.keyDown = False
 
-class GameArea:
-    Height = 200
-    Width = 300
-    
-    def __init__(self, canvas):
-        self.canvas = canvas
-        self.rand = Random()
-        self.RedrawScreen(0)
-    
-    def addLine(self, _from, to):
-        line = Line()
-        line.X1 = _from[0]
-        line.Y1 = _from[1]
-        line.X2 = to[0]
-        line.Y2 = to[1]
-        line.Stroke = Brushes.White
-        line.StrokeThickness = 2.0
-        self.canvas.Children.Add(line)
-    
-    def isCollision(self, x, y):
-        width = self.Width
-        height = self.Height
-        if y <= 0 or y >= height:
-            return True
-        if x >= width:
-            return not ((height / 2 + 15) > y > (height / 2 - 15))
-        for star in self.stars:
-            testX = x - Canvas.GetLeft(star)
-            testY = y - Canvas.GetTop(star)
-            if mvvm.CheckCollisionPoint(Point(testX, testY), star):
-                return True
-    
-    def AddNewPosition(self, x, y):
-        if self.isCollision(x, y):
-            return False
-        self.polyline.Points.Add(Point(x, y))
-        return True
-    
-    def RedrawScreen(self, level):
-        self.canvas.Children.Clear()
-        width = self.Width
-        height = self.Height
-        self.addLine((0,0), (width,0)) #line across top
-        self.addLine((0,height), (width, height)) # line across botom
-        self.addLine((width,0), (width, height / 2 - 15))
-        self.addLine((width,height / 2 + 15), (width, height))
-
-        self.stars = []
-        for n in range(level * 3):
-            star = mvvm.XamlLoader('star.xaml').Root
-            self.stars.append(star)
-            Canvas.SetLeft(star, self.rand.Next(10, self.Width - 10))
-            Canvas.SetTop(star, self.rand.Next(2, self.Height - 10))
-            self.canvas.Children.Add(star)
-            
-        self.polyline = Polyline()
-        self.polyline.Stroke = Brushes.Yellow
-        self.polyline.StrokeThickness = 2.0
-        self.canvas.Children.Add(self.polyline)
-
 class HighScore:
     def __init__(self):
         self.Level = 0
@@ -166,7 +105,6 @@ class HighScore:
         if os.path.isfile('record.txt'):
             record = open('record.txt').readline()
             parts = record.split(':')
-
 
 xaml = mvvm.XamlLoader('asterisk.xaml')
 xaml.Root.DataContext = ViewModel(xaml)

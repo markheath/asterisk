@@ -1,7 +1,7 @@
 <Window
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="IronPython MVVM Demo"
+    Title="Asterisk (WPF &amp; IronPython)"
     Width="360"
     SizeToContent="Height"
     Background="Black">
