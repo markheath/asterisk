@@ -16,9 +16,9 @@
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" FontSize="12" Content="{Binding Level}" Foreground="White" />
-        <Label Grid.Row="0" Grid.Column="1" FontSize="12" Content="{Binding Record}" Foreground="White" />
-        <Label Grid.Row="1" Grid.Column="0" FontSize="12" Content="Hold down SPACE key to go up" Foreground="Yellow" />
+        <Label Grid.Row="0" Grid.Column="0" FontSize="16" Content="{Binding Level}" Foreground="White" />
+        <Label Grid.Row="0" Grid.Column="1" FontSize="16" Content="{Binding Record}" Foreground="White" />
+        <Label Grid.Row="1" Grid.ColumnSpan="2" FontSize="12" Content="Hold down SPACE key to go up" Foreground="Yellow" />
         <Canvas Margin="10" Grid.Row="2" Grid.ColumnSpan="2" x:Name="gameCanvas" />
         <Button Grid.Row="3" Grid.Column="0" FontSize="12" Content="New Game" Command="{Binding NewGameCommand}" />        
     </Grid>
