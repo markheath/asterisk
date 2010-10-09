@@ -67,16 +67,9 @@ class Command(ICommand):
 
 # WPF Check Collision function
 def CheckCollisionPoint(point, control):
-    hits = []
-    def callbackFunc(hit):
-        hits.append(hit.VisualHit)
-        return HitTestResultBehavior.Stop
-    callback = HitTestResultCallback(callbackFunc)
-    VisualTreeHelper.HitTest(control, None, callback,
-        PointHitTestParameters(point))    
-    return len(hits) > 0
-
-
+    transformPoint = control.RenderTransform.Inverse.Transform(point)
+    hit = VisualTreeHelper.HitTest(control, transformPoint)
+    return hit != None
 
 from System.Windows import Application
   
