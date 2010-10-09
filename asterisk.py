@@ -49,22 +49,24 @@ class ViewModel(mvvm.ViewModelBase):
 
         if crash:
             def OnDone(message):
-                self.NewGameCommand.canExecute = True
-                self.NewGameCommand.RaiseCanExecuteChanged()
                 self.message.xaml.Root.Visibility = Visibility.Collapsed
                 if self.isHighScore():
                     self.highScore.Name = message
                     self.highScore.Level = self.currentLevel
-                self.Record = self.highScore.Message
-                self.RaisePropertyChanged("Record")
-                self.highScore.Save()
+                    self.NewGameCommand.canExecute = True
+                    self.NewGameCommand.RaiseCanExecuteChanged()
+                    self.Record = self.highScore.Message
+                    self.RaisePropertyChanged("Record")
+                    self.highScore.Save()
+                else:
+                    self.newGame()
                 
             self.Timer.Stop()
             print "Game Over"
             if self.isHighScore():
                 self.message.Show("High Score", OnDone, True)
             else:
-                self.message.Show("Game Over", OnDone)
+                self.message.Show("Game Over, Play Again?", OnDone)
         else:
             if self.xPosition >= self.gameArea.Width:
                 self.newLevel()

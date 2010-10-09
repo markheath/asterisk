@@ -13,6 +13,7 @@ from System.Windows.Controls import Canvas
 class GameArea:
     Height = 200
     Width = 300
+    StarScale = 0.8 # n.b. must be same as in star.xaml (TODO: fix this)
     
     def __init__(self, canvas):
         self.canvas = canvas
@@ -37,8 +38,8 @@ class GameArea:
         if x >= width:
             return not ((height / 2 + 15) > y > (height / 2 - 15))
         for star in self.stars:
-            testX = x - Canvas.GetLeft(star)
-            testY = y - Canvas.GetTop(star)
+            testX = (x - Canvas.GetLeft(star)) / self.StarScale
+            testY = (y - Canvas.GetTop(star)) / self.StarScale
             if mvvm.CheckCollisionPoint(Point(testX, testY), star):
                 return True
     
