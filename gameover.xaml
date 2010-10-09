@@ -1,0 +1,27 @@
+<Border
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="300"
+    Background="Azure">
+        <StackPanel Orientation="Vertical">
+            <Label FontSize="16" Content="{Binding Message}" HorizontalAlignment="Center" />
+            <StackPanel Visibility="{Binding IsHighScore}" Orientation="Horizontal">
+                <Label 
+                    FontSize="12" 
+                    Content="Enter your name:" 
+                    Margin="5" />
+                <TextBox 
+                    Text="{Binding Name, Mode=TwoWay}" 
+                    Width="150" 
+                    MaxLength="20" 
+                    Margin="5" />
+            </StackPanel>
+            <Button 
+                FontSize="12" 
+                Content="OK" 
+                Command="{Binding OKCommand}" 
+                HorizontalAlignment="Center"
+                Margin="5"
+                Width="50" />
+    </StackPanel>
+</Border>

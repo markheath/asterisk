@@ -5,7 +5,7 @@
     Width="360"
     SizeToContent="Height"
     Background="Black">
-    <Grid Margin="15">
+    <Grid Margin="15" x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -19,6 +19,7 @@
         <Label Grid.Row="0" Grid.Column="0" FontSize="16" Content="{Binding Level}" Foreground="White" />
         <Label Grid.Row="0" Grid.Column="1" FontSize="16" Content="{Binding Record}" Foreground="White" />
         <Label Grid.Row="1" Grid.ColumnSpan="2" FontSize="12" Content="Hold down SPACE key to go up" Foreground="Yellow" />
+        <ContentPresenter Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="highScorePresenter" />
         <Canvas Margin="10" Grid.Row="2" Grid.ColumnSpan="2" x:Name="gameCanvas" />
         <Button Grid.Row="3" Grid.Column="0" FontSize="12" Content="New Game" Command="{Binding NewGameCommand}" />        
     </Grid>

@@ -48,14 +48,15 @@ class GameArea:
             return False
         return True
     
-    def RedrawScreen(self, level):
-        self.canvas.Children.Clear()
-        width = self.Width
-        height = self.Height
+    def drawBorders(self, width, height):
         self.addLine((0,0), (width,0)) #line across top
         self.addLine((0,height), (width, height)) # line across botom
         self.addLine((width,0), (width, height / 2 - 15))
         self.addLine((width,height / 2 + 15), (width, height))
+    
+    def RedrawScreen(self, level):
+        self.canvas.Children.Clear()
+        self.drawBorders(self.Width, self.Height)
 
         self.stars = []
         for n in range(level * 3):

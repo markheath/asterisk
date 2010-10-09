@@ -10,8 +10,13 @@ from System.Windows.Media import VisualTreeHelper, HitTestResultCallback, PointH
 class XamlLoader(object):
     def __init__(self, xamlPath):
         stream = File.OpenRead(xamlPath)
-        self.Root = XamlReader.Load(stream)
-         
+        try:
+            self.Root = XamlReader.Load(stream)
+        except SystemError, e:
+            print 'Error parsing xaml file: {0}'.format(xamlPath)
+            #print str(e)
+            raise e
+
     def __getattr__(self, item):
         """Maps values to attributes.
         Only called if there *isn't* an attribute with this name
