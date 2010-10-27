@@ -12,6 +12,18 @@ from System import Uri, UriKind
 class GameArea:
     Height = 200
     Width = 300
+    starXaml = """
+<Path xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  Stroke="White" 
+  StrokeThickness="2" 
+  StrokeStartLineCap="Round" 
+  StrokeEndLineCap="Round" 
+  StrokeLineJoin="Round" 
+  Data="M 0,0 l 5,0 l 2.5,-5 l 2.5,5 l 5,0 l -3.5,5 l 1,5 l -5,-2.5 l -5,2.5 l 1,-5 Z">
+  <Path.RenderTransform>
+    <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
+  </Path.RenderTransform>
+</Path>"""    
     
     def __init__(self, canvas):
         self.canvas = canvas
@@ -25,7 +37,7 @@ class GameArea:
         if not args.Error:
             self.starXaml = args.Result
         else:
-            raise args.Error
+            pass #raise args.Error
             
     def addLine(self, _from, to):
         line = Line()
@@ -75,6 +87,6 @@ class GameArea:
             self.canvas.Children.Add(star)
             
         self.polyline = Polyline()
-        self.polyline.Stroke = SolidColorBrush(Color.FromArgb(255,0,255,255)) # Brushes.Yellow
+        self.polyline.Stroke = SolidColorBrush(Color.FromArgb(255,255,255,0)) # Brushes.Yellow
         self.polyline.StrokeThickness = 2.0
         self.canvas.Children.Add(self.polyline)

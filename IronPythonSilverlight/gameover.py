@@ -1,25 +1,48 @@
 import clr
 import mvvm
 from System.Windows import Visibility
-from System.Net import WebClient
-from System import Uri, UriKind
 
 class GameOver:
+    gameOverXaml = """<Border
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="300"
+    Background="Black"
+    BorderBrush="White"
+    BorderThickness="2"
+    CornerRadius="5">
+        <StackPanel Orientation="Vertical">
+            <TextBlock Foreground="White" FontSize="16" Text="{Binding Message}" HorizontalAlignment="Center" />
+            <StackPanel Visibility="{Binding IsHighScore}" Orientation="Horizontal">
+                <TextBlock 
+                    FontSize="12" 
+                    Foreground="White"
+                    Text="Enter your name:" 
+                    Margin="5" />
+                <TextBox 
+                    Text="{Binding Name, Mode=TwoWay}" 
+                    Width="150" 
+                    MaxLength="20" 
+                    Margin="5" />
+            </StackPanel>
+            <Button 
+                FontSize="12" 
+                Content="OK" 
+                Command="{Binding OKCommand}" 
+                HorizontalAlignment="Center"
+                Margin="5"
+                Width="50" />
+    </StackPanel>
+</Border>"""
+    
     def __init__(self,loaded):
         self.loaded = loaded
-        wc = WebClient()
-        wc.DownloadStringCompleted += self.xamlDownloaded
-        wc.DownloadStringAsync(Uri('gameover.xaml',UriKind.Relative))
         self.viewModel = GameOverViewModel()
-        
-    def xamlDownloaded(self, sender, args):
-        if not args.Error:
-            self.xaml = mvvm.XamlLoader(args.Result)
-            self.xaml.Root.DataContext = self.viewModel
-            self.xaml.Root.Visibility = Visibility.Collapsed
-            #callback
-            self.loaded(self.xaml.Root)
-    
+        self.xaml = mvvm.XamlLoader(self.gameOverXaml)
+        self.xaml.Root.DataContext = self.viewModel
+        self.xaml.Root.Visibility = Visibility.Collapsed
+        loaded(self.xaml.Root)
+            
     def Show(self, message, callback, isHighScore=False):
         self.viewModel.Message = message
         self.viewModel.IsHighScore = Visibility.Visible if isHighScore else Visibility.Collapsed

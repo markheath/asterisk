@@ -60,8 +60,14 @@ class Command(ICommand):
     def CanExecute(self, parameter):
         return self.canExecute
 
-# WPF Check Collision function
+# Silverlight Check Collision function
 def CheckCollisionPoint(point, control):
-    transformPoint = control.RenderTransform.Inverse.Transform(point)
-    hit = VisualTreeHelper.HitTest(control, transformPoint)
-    return hit != None
+    #MRH: not sure why this is coming through as identity, but Inverse is calculated as None
+    #for a MatrixTransform
+    inverse = control.RenderTransform.Inverse
+    if not inverse:
+        transformPoint = point
+    else:
+        transformPoint = inverse.Transform(point)
+    hits = VisualTreeHelper.FindElementsInHostCoordinates(transformPoint, control)
+    return hits.Contains(control)

@@ -29,6 +29,7 @@ class ViewModel(mvvm.ViewModelBase):
         xaml.KeyDown += self.onKeyDown
         xaml.KeyUp += self.onKeyUp
         #xaml.Closing += lambda sender, args: self.Timer.Stop()
+        self.buttonNewGame = xaml.buttonNewGame
         xaml.buttonNewGame.Click += self.newGameClick
         
     def setupGameLoop(self):
@@ -51,8 +52,7 @@ class ViewModel(mvvm.ViewModelBase):
                 if self.isHighScore():
                     self.highScore.Name = message
                     self.highScore.Level = self.currentLevel
-                    self.NewGameCommand.canExecute = True
-                    self.NewGameCommand.RaiseCanExecuteChanged()
+                    self.buttonNewGame.IsEnabled = True
                     self.Record = self.highScore.Message
                     self.RaisePropertyChanged("Record")
                     self.highScore.Save()
@@ -77,6 +77,7 @@ class ViewModel(mvvm.ViewModelBase):
     
     def newGame(self):
         self.currentLevel = 0
+        self.buttonNewGame.IsEnabled = False
         self.newLevel()
         self.Timer.Start()
         
