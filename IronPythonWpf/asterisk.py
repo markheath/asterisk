@@ -2,7 +2,8 @@
 # by Mark Heath, http://mark-dot-net.blogspot.com
 import mvvm
 import clr
-import os
+import GameOver
+import HighScore
 from GameArea import GameArea
 
 clr.AddReference("WindowsBase")
@@ -10,14 +11,14 @@ clr.AddReference("PresentationCore")
 clr.AddReference("PresentationFramework")
 
 from System import TimeSpan
-from System.Windows import Visibility
 from System.Windows.Threading import DispatcherTimer
 from System.Windows.Input import Key
+from System.Windows import Visibility
 
 class ViewModel(mvvm.ViewModelBase):
     def __init__(self, xaml):
         mvvm.ViewModelBase.__init__(self)
-        self.highScore = HighScore()
+        self.highScore = HighScore.HighScore()
         self.Level = "Level 1"
         self.Record = self.highScore.Message
         self.NewGameCommand = mvvm.Command(self.newGame)
@@ -27,7 +28,7 @@ class ViewModel(mvvm.ViewModelBase):
         self.yPosition = 0
         self.keyDown = False
         self.gameArea = GameArea(xaml.gameCanvas)
-        self.message = GameOver()
+        self.message = GameOver.GameOver()
         xaml.Root.KeyDown += self.onKeyDown
         xaml.Root.KeyUp += self.onKeyUp
         xaml.Root.Closing += lambda sender, args: self.Timer.Stop()
@@ -99,82 +100,7 @@ class ViewModel(mvvm.ViewModelBase):
         if (args.Key == Key.Space):
             self.keyDown = False
 
-class HighScore:
-    def __init__(self):
-        self.Level = 0
-        self.Name = 'Nobody'
-        self.LoadHighScore()
 
-    def getMessage(self):
-        return 'Level {0} by {1}'.format(self.Level, self.Name)
-
-    Message = property(getMessage)
-
-    def Save(self):
-        f = open('record.txt', 'w')
-        f.write('{0}:{1}'.format(self.Level, self.Name))
-
-    def LoadHighScore(self):
-        if os.path.isfile('record.txt'):
-            record = open('record.txt').readline()
-            parts = record.split(':')
-            if(len(parts) == 2):
-                self.Level = int(parts[0])
-                self.Name = parts[1]
-
-class GameOver:
-    def __init__(self):
-        self.xaml = mvvm.XamlLoader('gameover.xaml')
-        self.viewModel = GameOverViewModel()
-        self.xaml.Root.DataContext = self.viewModel
-        self.xaml.Root.Visibility = Visibility.Collapsed
-        
-    def Show(self, message, callback, isHighScore=False):
-        self.viewModel.Message = message
-        self.viewModel.IsHighScore = Visibility.Visible if isHighScore else Visibility.Collapsed
-        self.xaml.Root.Visibility = Visibility.Visible
-        self.viewModel.callback=callback
-
-class GameOverViewModel(mvvm.ViewModelBase):
-    def __init__(self):
-        mvvm.ViewModelBase.__init__(self)
-        self._message = ''
-        self._name = ''
-        self.callback = None
-        self.OKCommand = mvvm.Command(self.onOK)
-        self._isHighScore = Visibility.Collapsed
-        
-    def onOK(self):
-        if self.callback:
-            self.callback(self.Name)
-    
-    def setMessage(self, message):
-        if self._message != message:
-            self._message = message
-            self.RaisePropertyChanged("Message")
-    
-    def getMessage(self):
-        return self._message
-        
-    def setIsHighScore(self, isHighScore):
-        if self._isHighScore != isHighScore:
-            self._isHighScore = isHighScore
-            self.RaisePropertyChanged("IsHighScore")
-    
-    def getIsHighScore(self):
-        return self._isHighScore
-    
-    def getName(self):
-        return self._name
-        
-    def setName(self, name):
-        if self._name != name:
-            self._name = name
-            self.RaisePropertyChanged("Name")
-    
-    Message = property(getMessage, setMessage)
-    Name = property(getName, setName)
-    IsHighScore = property(getIsHighScore, setIsHighScore)
 
 xaml = mvvm.XamlLoader('asterisk.xaml')
 xaml.Root.DataContext = ViewModel(xaml)
