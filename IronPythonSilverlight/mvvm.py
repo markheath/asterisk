@@ -62,15 +62,15 @@ class Command(ICommand):
         return self.canExecute
 
 # Silverlight Check Collision function
-def CheckCollisionPoint(point, control, subTree):
-    inverse = control.RenderTransform.Inverse
-    if not inverse:
-        st = control.RenderTransform
-        inverse = ScaleTransform()
-        inverse.ScaleX = 1.0 / st.ScaleX
-        inverse.ScaleY = 1.0 / st.ScaleY
+def CheckCollisionPoint(point, subTree):
+    #inverse = control.RenderTransform.Inverse
+    #if not inverse:
+    #    st = control.RenderTransform
+    #    inverse = ScaleTransform()
+    #    inverse.ScaleX = 1.0 / st.ScaleX
+    #    inverse.ScaleY = 1.0 / st.ScaleY
     transformPoint = point #inverse.Transform(point)
     hits = VisualTreeHelper.FindElementsInHostCoordinates(transformPoint, subTree)
-    #if hits.Count:
-    #    Debug.WriteLine('HIT')
+    if hits.Count:
+        Debug.WriteLine('Test Point {0} HIT {1}'.format(transformPoint,hits[0]))
     return hits.Count #hits.Contains(control)

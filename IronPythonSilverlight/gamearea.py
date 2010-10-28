@@ -28,12 +28,18 @@ class GameArea:
     
     def __init__(self, canvas):
         self.canvas = canvas
+        self.findRootVisual()
         self.rand = Random()
         self.RedrawScreen(0)
         wc = WebClient()
         wc.DownloadStringCompleted += self.xamlDownloaded
         wc.DownloadStringAsync(Uri('star.xaml',UriKind.Relative))
-        
+    
+    def findRootVisual(self):
+        self.rootVisual = self.canvas
+        while self.rootVisual.Parent:
+            self.rootVisual = self.rootVisual.Parent
+    
     def xamlDownloaded(self, sender, args):
         if not args.Error:
             self.starXaml = args.Result
@@ -58,12 +64,12 @@ class GameArea:
         if x >= width:
             return not ((height / 2 + 15) > y > (height / 2 - 15))
         #Debug.WriteLine('Collision Testing ({0},{1})'.format(x,y))            
-        for star in self.stars:
-            testX = x #- Canvas.GetLeft(star)
-            testY = y #- Canvas.GetTop(star)
-            if mvvm.CheckCollisionPoint(Point(testX, testY), star, self.canvas):
-                return True
-    
+        testPoint = Point(x,y)
+        hostPoint = self.canvas.TransformToVisual(self.rootVisual).Transform(testPoint)
+        Debug.WriteLine('Test Point: {0}, Host Point: {1}'.format(testPoint,hostPoint))
+        if mvvm.CheckCollisionPoint(hostPoint, self.canvas):
+            return True
+            
     def AddNewPosition(self, x, y):
         self.polyline.Points.Add(Point(x, y))
         if self.isCollision(x, y):
