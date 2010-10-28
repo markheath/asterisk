@@ -16,39 +16,20 @@ class HighScore:
     def Save(self):
         filename = "record.txt"
         data = "{0}:{1}".format(self.Level,self.Name)
-        isf = IsolatedStorageFile.GetUserStoreForApplication()
-        try:                
-            isfs = IsolatedStorageFileStream(filename, FileMode.Create, isf)
-            try:
-                sw = StreamWriter(isfs)
-                try:
+        with IsolatedStorageFile.GetUserStoreForApplication() as isf:
+            with IsolatedStorageFileStream(filename, FileMode.Create, isf) as isfs:
+                with StreamWriter(isfs) as sw:
                     sw.Write(data)
-                finally:
-                    sw.Dispose()
-            finally:
-                isfs.Dispose()
-        finally:
-            isf.Dispose()
 
     def LoadHighScore(self):
         filename = "record.txt"
-        isf = IsolatedStorageFile.GetUserStoreForApplication()
-        try:
+        with IsolatedStorageFile.GetUserStoreForApplication() as isf:
             if not isf.FileExists(filename):
                 return
-            isfs = IsolatedStorageFileStream(filename, FileMode.Open, isf)
-            try:
-                sr = StreamReader(isfs)
-                try:
+            with IsolatedStorageFileStream(filename, FileMode.Open, isf) as isfs:
+                with StreamReader(isfs) as sr:
                     record = sr.ReadLine()
                     parts = record.split(':')
                     if(len(parts) == 2):
                         self.Level = int(parts[0])
-                        self.Name = parts[1]
-                finally:
-                    sr.Dispose()
-            finally:
-                isfs.Dispose()
-        finally:
-            isf.Dispose()
-        pass #TODO: implement using isolated store
+                        self.Name = parts[1]        
