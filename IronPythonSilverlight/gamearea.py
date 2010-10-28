@@ -8,6 +8,7 @@ from System.Windows.Media import SolidColorBrush, Color
 from System.Windows.Controls import Canvas
 from System.Net import WebClient
 from System import Uri, UriKind
+from System.Diagnostics import Debug
 
 class GameArea:
     Height = 200
@@ -56,10 +57,11 @@ class GameArea:
             return True
         if x >= width:
             return not ((height / 2 + 15) > y > (height / 2 - 15))
+        #Debug.WriteLine('Collision Testing ({0},{1})'.format(x,y))            
         for star in self.stars:
-            testX = x - Canvas.GetLeft(star)
-            testY = y - Canvas.GetTop(star)
-            if mvvm.CheckCollisionPoint(Point(testX, testY), star):
+            testX = x #- Canvas.GetLeft(star)
+            testY = y #- Canvas.GetTop(star)
+            if mvvm.CheckCollisionPoint(Point(testX, testY), star, self.canvas):
                 return True
     
     def AddNewPosition(self, x, y):

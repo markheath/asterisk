@@ -1,11 +1,12 @@
 import clr
  
 from System import EventArgs
-from System.Windows.Media import VisualTreeHelper
+from System.Windows.Media import VisualTreeHelper, ScaleTransform
 from System.Windows.Markup import XamlReader
 
 from System.ComponentModel import INotifyPropertyChanged
 from System.ComponentModel import PropertyChangedEventArgs
+from System.Diagnostics import Debug
 
 class XamlLoader(object):
     def __init__(self, xaml):
@@ -61,13 +62,15 @@ class Command(ICommand):
         return self.canExecute
 
 # Silverlight Check Collision function
-def CheckCollisionPoint(point, control):
-    #MRH: not sure why this is coming through as identity, but Inverse is calculated as None
-    #for a MatrixTransform
+def CheckCollisionPoint(point, control, subTree):
     inverse = control.RenderTransform.Inverse
     if not inverse:
-        transformPoint = point
-    else:
-        transformPoint = inverse.Transform(point)
-    hits = VisualTreeHelper.FindElementsInHostCoordinates(transformPoint, control)
-    return hits.Contains(control)
+        st = control.RenderTransform
+        inverse = ScaleTransform()
+        inverse.ScaleX = 1.0 / st.ScaleX
+        inverse.ScaleY = 1.0 / st.ScaleY
+    transformPoint = point #inverse.Transform(point)
+    hits = VisualTreeHelper.FindElementsInHostCoordinates(transformPoint, subTree)
+    #if hits.Count:
+    #    Debug.WriteLine('HIT')
+    return hits.Count #hits.Contains(control)
