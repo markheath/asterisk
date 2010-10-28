@@ -12,10 +12,10 @@
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="16" Text="{Binding Level}" Foreground="White" />
-        <TextBlock Grid.Row="0" Grid.Column="1" FontSize="16" Text="{Binding Record}" Foreground="White" />
+        <TextBlock x:Name="labelLevel" Grid.Row="0" Grid.Column="0" FontSize="16" Text="{Binding Level}" Foreground="White" />
+        <TextBlock x:Name="labelRecord" Grid.Row="0" Grid.Column="1" FontSize="16" Text="{Binding Record}" Foreground="White" />
         <TextBlock Grid.Row="1" Grid.ColumnSpan="2" FontSize="12" Text="Hold down SPACE key to go up" Foreground="Yellow" />
-        <Canvas Margin="10" Grid.Row="2" Grid.ColumnSpan="2" x:Name="gameCanvas" />
+        <Canvas x:Name="gameCanvas" Margin="10" Grid.Row="2" Grid.ColumnSpan="2"  />
         <Button x:Name="buttonNewGame" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Width="80" HorizontalAlignment="Center" FontSize="12" Content="New Game" />
         <ContentPresenter Grid.Row="3" Grid.ColumnSpan="2" x:Name="highScorePresenter" />
     </Grid>

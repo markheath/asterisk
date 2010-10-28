@@ -11,12 +11,13 @@ from System.Windows.Threading import DispatcherTimer
 from System.Windows.Input import Key
 from System.Windows import Visibility
 
-class ViewModel(mvvm.ViewModelBase):
+class Asterisk():
     def __init__(self, xaml):
-        mvvm.ViewModelBase.__init__(self)
+        self.labelLevel = xaml.labelLevel
+        self.labelRecord = xaml.labelRecord
         self.highScore = highscore.HighScore()
-        self.Level = "Level 1"
-        self.Record = self.highScore.Message        
+        self.labelLevel.Text = "Level 1"
+        self.labelRecord.Text = self.highScore.Message        
         self.setupGameLoop()
         self.currentLevel = 0
         self.xPosition = 0
@@ -53,8 +54,7 @@ class ViewModel(mvvm.ViewModelBase):
                     self.highScore.Name = message
                     self.highScore.Level = self.currentLevel
                     self.buttonNewGame.IsEnabled = True
-                    self.Record = self.highScore.Message
-                    self.RaisePropertyChanged("Record")
+                    self.labelRecord.Text = self.highScore.Message
                     self.highScore.Save()
                 else:
                     self.newGame()
@@ -85,8 +85,7 @@ class ViewModel(mvvm.ViewModelBase):
         self.currentLevel += 1
         self.xPosition = 0
         self.yPosition = self.gameArea.Height / 2
-        self.Level = 'Level ' + str(self.currentLevel)
-        self.RaisePropertyChanged("Level")
+        self.labelLevel.Text = 'Level ' + str(self.currentLevel)
         self.keyDown = False
         self.gameArea.RedrawScreen(self.currentLevel);
         self.gameArea.AddNewPosition(self.xPosition, self.yPosition)
@@ -99,4 +98,4 @@ class ViewModel(mvvm.ViewModelBase):
         if (args.Key == Key.Space):
             self.keyDown = False
 
-xaml.DataContext = ViewModel(xaml)
+Asterisk(xaml)

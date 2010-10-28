@@ -63,10 +63,9 @@ class GameArea:
             return True
         if x >= width:
             return not ((height / 2 + 15) > y > (height / 2 - 15))
-        #Debug.WriteLine('Collision Testing ({0},{1})'.format(x,y))            
         testPoint = Point(x,y)
         hostPoint = self.canvas.TransformToVisual(self.rootVisual).Transform(testPoint)
-        Debug.WriteLine('Test Point: {0}, Host Point: {1}'.format(testPoint,hostPoint))
+        #Debug.WriteLine('Test Point: {0}, Host Point: {1}'.format(testPoint,hostPoint))
         if mvvm.CheckCollisionPoint(hostPoint, self.canvas):
             return True
             
