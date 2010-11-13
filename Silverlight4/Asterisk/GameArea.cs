@@ -57,8 +57,11 @@ namespace Asterisk
             this.canvas.Children.Add(line);
         }
 
-        private bool IsCollision(int x, int y)
+        private bool IsCollision(Point p)
         {
+            /* Silverlight collision detection handles wall collisions for us
+            int x = (int)p.X;
+            int y = (int)p.Y;
             if (y <= 0 || y >= Height)
             {
                 return true;
@@ -66,9 +69,8 @@ namespace Asterisk
             if (x >= Width)
             {
                 return !(((Height / 2 + 15) > y) && (y > (Height / 2 - 15)));
-            }
-            var testPoint = new Point(x, y);
-            var hostPoint = this.canvas.TransformToVisual(this.rootVisual).Transform(testPoint);
+            }*/
+            var hostPoint = this.canvas.TransformToVisual(this.rootVisual).Transform(p);
             //Debug.WriteLine("Test Point: {0}, Host Point: {1}" testPoint,hostPoint))
             return CheckCollisionPoint(hostPoint, this.canvas);
         }
@@ -83,10 +85,10 @@ namespace Asterisk
             return hits.Count() > 0;
         }
 
-        public bool AddNewPosition(int x, int y)
+        public bool AddNewPosition(Point point)
         {
-            this.polyline.Points.Add(new Point(x, y));
-            return !this.IsCollision(x, y);
+            this.polyline.Points.Add(point);
+            return !this.IsCollision(point);
         }
 
         private void DrawBorders()

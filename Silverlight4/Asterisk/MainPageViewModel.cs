@@ -102,7 +102,7 @@ namespace Asterisk
 
         private void CheckPosition()
         {
-            bool crash = !this.gameArea.AddNewPosition(this.xPosition, this.yPosition);
+            bool crash = !this.gameArea.AddNewPosition(new Point(this.xPosition, this.yPosition));
 
             if (crash)
             {
@@ -162,7 +162,7 @@ namespace Asterisk
             this.Level = String.Format("Level {0}", this.currentLevel);
             this.keyDown = false;
             this.gameArea.RedrawScreen(this.currentLevel);
-            this.gameArea.AddNewPosition(this.xPosition, this.yPosition);
+            this.gameArea.AddNewPosition(new Point(this.xPosition, this.yPosition));
         }
 
         private void OnKeyDown(object sender, KeyEventArgs args)
