@@ -1,0 +1,8 @@
+syntax: glob
+
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+ClientBin/
+record.txt
