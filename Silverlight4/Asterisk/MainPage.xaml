@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:my="clr-namespace:Asterisk"
     mc:Ignorable="d"
-    d:DesignHeight="300" d:DesignWidth="400">
+    d:DesignHeight="380" d:DesignWidth="350">
 
     <Grid Margin="15" x:Name="mainGrid" Background="Black" Width="320">
         <Grid.RowDefinitions>

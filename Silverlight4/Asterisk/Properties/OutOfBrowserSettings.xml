@@ -1,0 +1,7 @@
+<OutOfBrowserSettings ShortName="Asterisk" EnableGPUAcceleration="False" ShowInstallMenuItem="True">
+  <OutOfBrowserSettings.Blurb>Asterisk - Silverlight recreation of classic BBC game</OutOfBrowserSettings.Blurb>
+  <OutOfBrowserSettings.WindowSettings>
+    <WindowSettings Title="Asterisk" Height="380" Width="350" />
+  </OutOfBrowserSettings.WindowSettings>
+  <OutOfBrowserSettings.Icons />
+</OutOfBrowserSettings>
